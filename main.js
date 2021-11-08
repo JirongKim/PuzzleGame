@@ -4,6 +4,15 @@ const GameImage = document.querySelector('.image-container');
 
 let answerTiles = [];
 let problemTiles = [];
+const dragged = {
+  id: null,
+  html: null,
+}
+
+const temp = {
+  id: null,
+  html: null,
+}
 
 function setGame(){
   answerTiles = createImageTiles();
@@ -25,6 +34,7 @@ function createImageTiles() {
   for (var i = 0; i < IMAGE_NUM; i++) {
     newList.push(document.createElement("li"));
     newList[i].setAttribute('id', 'list' + i);
+    newList[i].setAttribute('draggable', 'true');
     GameImage.appendChild(newList[i]);
 
     newList[i].style.backgroundPosition = -pos_x + 'px ' + -pos_y + 'px';
@@ -48,3 +58,27 @@ function shuffle(array) {
   }
   return array;
 }
+
+//events
+GameImage.addEventListener('dragstart', e => {
+  var obj = e.target;
+  dragged.id = obj.id;
+  dragged.html = obj.outerHTML;
+})
+GameImage.addEventListener('dragover', e => {
+  e.preventDefault();
+  // console.log('over');
+})
+GameImage.addEventListener('drop', e => {
+  var obj = e.target;
+  if(obj.id !== dragged.id){
+    temp.id = obj.id;
+    temp.html = obj.outerHTML;
+
+    e.target.id = dragged.id;
+    e.target.outerHTML = dragged.html;
+
+    dragged.id = temp.id;
+    dragged.html = temp.html;
+  }
+})
