@@ -1,13 +1,27 @@
 const IMAGE_NUM = 16;
-const PROVIDING_TIME = 2000;
+const PROVIDING_TIME = 5000;
 const GameImage = document.querySelector('.image-container');
+const GameText = document.querySelector('.game-text');
+const PlayTime = document.querySelector('.play-time');
 
-let answerTiles = [];
-let problemTiles = [];
+var answerTiles = [];
+var problemTiles = [];
+var isPlaying = false;
+var timeInterval = null;
+let time = 1;
 
 function setGame(){
+  GameImage.innerHTML = "";
+  time = 1;
+  GameText.style.display = "none";
+  clearInterval(timeInterval);
+  isPlaying = true;
   answerTiles = createImageTiles();
-  problemTiles = shuffle(answerTiles);
+  problemTiles = shuffle(answerTiles.slice());
+  timeInterval = setInterval(()=>{
+    PlayTime.innerText = time;
+    time++;
+  }, 1000)
 
   setTimeout(() => {
     tileDisplay(problemTiles);
@@ -33,6 +47,8 @@ function createImageTiles() {
       pos_x = 0;
       pos_y += 100;
     }
+
+    answerTiles[i] = newList[i];
   }
   return newList;
 }
@@ -54,26 +70,42 @@ function tileDisplay(tiles){
   }
 }
 
+function checkStatus(){
+  for (var i = 0; i < IMAGE_NUM; i++) {
+    if(answerTiles[i] !== problemTiles[i])
+    {
+      console.log('fail!');
+      return;
+    }
+  }
+  GameText.style.display = "block";
+  clearInterval(timeInterval);
+}
+
 //events
 var dragged;
 var draggedIndex;
 
 GameImage.addEventListener('dragstart', e => {
+  if(!isPlaying) return;
   console.log(e);
   dragged = e.target;
   draggedIndex = problemTiles.indexOf(dragged);
 })
 
 GameImage.addEventListener('dragover', e => {
+  if(!isPlaying) return;
   e.preventDefault();
   // console.log('over');
 })
 
 GameImage.addEventListener('drop', e => {
+  if(!isPlaying) return;
   if(e.target !== dragged){
     temp = e.target;
     problemTiles[problemTiles.indexOf(e.target)] = dragged;
     problemTiles[draggedIndex] = temp;
     tileDisplay(problemTiles);
+    checkStatus();
   }
 })
