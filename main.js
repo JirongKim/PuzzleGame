@@ -3,6 +3,7 @@ const PROVIDING_TIME = 5000;
 const GameImage = document.querySelector('.image-container');
 const GameText = document.querySelector('.game-text');
 const PlayTime = document.querySelector('.play-time');
+const StartText = document.querySelector('.start-text');
 
 var answerTiles = [];
 var problemTiles = [];
@@ -11,13 +12,23 @@ var timeInterval = null;
 let time = 1;
 
 function setGame(){
+  if(isPlaying){
+    var returnValue = confirm('다시 시작하시겠습니까?');
+    if(!returnValue) { return; }
+    else {
+      alert('게임이 다시 시작됩니다');
+    }
+  }
   GameImage.innerHTML = "";
+  StartText.style.display = "none";
+  GameImage.classList.remove("image-container");
   time = 1;
   GameText.style.display = "none";
   clearInterval(timeInterval);
   isPlaying = true;
   answerTiles = createImageTiles();
   problemTiles = shuffle(answerTiles.slice());
+
   timeInterval = setInterval(()=>{
     PlayTime.innerText = time;
     time++;
@@ -80,6 +91,11 @@ function checkStatus(){
   }
   GameText.style.display = "block";
   clearInterval(timeInterval);
+  var li = document.querySelectorAll('li');
+  for( var i = 0; i < li.length; i++){
+    var item = li.item(i);
+    item.draggable = false;
+  }
 }
 
 //events
