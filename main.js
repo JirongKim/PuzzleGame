@@ -9,6 +9,7 @@ var answerTiles = [];
 var problemTiles = [];
 var isPlaying = false;
 var timeInterval = null;
+var AnswerTimer = null;
 let time = 1;
 
 function setGame(){
@@ -19,22 +20,27 @@ function setGame(){
       alert('게임이 다시 시작됩니다');
     }
   }
+  isPlaying = true;
   GameImage.innerHTML = "";
   StartText.style.display = "none";
   GameImage.classList.remove("image-container");
-  time = 1;
   GameText.style.display = "none";
+
+  time = 0;
+  PlayTime.innerText = time;
+
   clearInterval(timeInterval);
-  isPlaying = true;
+  clearInterval(AnswerTimer);
+
   answerTiles = createImageTiles();
   problemTiles = shuffle(answerTiles.slice());
 
   timeInterval = setInterval(()=>{
-    PlayTime.innerText = time;
     time++;
+    PlayTime.innerText = time;
   }, 1000)
 
-  setTimeout(() => {
+  AnswerTimer = setTimeout(() => {
     tileDisplay(problemTiles);
   }, PROVIDING_TIME)
 }
@@ -48,6 +54,7 @@ function createImageTiles() {
     newList.push(document.createElement("li"));
     newList[i].setAttribute('id', 'list' + i);
     newList[i].setAttribute('draggable', 'true');
+
     GameImage.appendChild(newList[i]);
 
     newList[i].style.backgroundPosition = -pos_x + 'px ' + -pos_y + 'px';
