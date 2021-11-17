@@ -5,12 +5,22 @@ const GameText = document.querySelector('.game-text');
 const PlayTime = document.querySelector('.play-time');
 const StartText = document.querySelector('.start-text');
 
+const imgFolder = './img/';
+const image_number = 17;
+
 var answerTiles = [];
 var problemTiles = [];
 var isPlaying = false;
+var isBBang = false;
 var timeInterval = null;
 var AnswerTimer = null;
 let time = 1;
+
+function setBBangGame(){
+  isBBang = true;
+  setGame();
+  isBBang = false;
+}
 
 function setGame(){
   if(isPlaying){
@@ -50,13 +60,27 @@ function createImageTiles() {
   var pos_x = 0;
   var pos_y = 0;
 
-  var random = new Date().getTime() +")";
+  var random;
+  if(!isBBang){
+    random = new Date().getTime() +")";
+  }
+  else {
+    random = Math.floor(Math.random() * image_number);
+    console.log(random);
+  }
 
   for (var i = 0; i < IMAGE_NUM; i++) {
     newList.push(document.createElement("li"));
     newList[i].setAttribute('id', 'list' + i);
     newList[i].setAttribute('draggable', 'true');
-    newList[i].style.background = "url(https://picsum.photos/400/400/?random&t=" + random;
+
+    if(!isBBang){
+      newList[i].style.background = "url(https://picsum.photos/400/400/?random&t=" + random;
+    }
+    else {
+      newList[i].style.background = `url('${imgFolder}${random}.jpeg')`;
+      newList[i].style.backgroundSize = "400px 400px";
+    }
 
     GameImage.appendChild(newList[i]);
 
