@@ -50,10 +50,13 @@ function createImageTiles() {
   var pos_x = 0;
   var pos_y = 0;
 
+  var random = new Date().getTime() +")";
+
   for (var i = 0; i < IMAGE_NUM; i++) {
     newList.push(document.createElement("li"));
     newList[i].setAttribute('id', 'list' + i);
     newList[i].setAttribute('draggable', 'true');
+    newList[i].style.background = "url(https://picsum.photos/400/400/?random&t=" + random;
 
     GameImage.appendChild(newList[i]);
 
@@ -96,6 +99,8 @@ function checkStatus(){
       return;
     }
   }
+  console.log('Completed!');
+  isPlaying = false;
   GameText.style.display = "block";
   clearInterval(timeInterval);
   var li = document.querySelectorAll('li');
