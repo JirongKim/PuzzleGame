@@ -5,7 +5,7 @@ const GameText = document.querySelector('.game-text');
 const PlayTime = document.querySelector('.play-time');
 const StartText = document.querySelector('.start-text');
 
-const imgFolder = './img/';
+const imgFolder = '../assets/img/';
 const image_number = 17;
 
 var answerTiles = [];
