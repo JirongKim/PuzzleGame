@@ -1,5 +1,7 @@
 # PuzzleGame
 Vanilla javascript로 구현한 퍼즐게임입니다.<br>
+구현기간 : 11월 7일 ~ 11월 17일 <br>
+사용언어 : HTML/CSS/Javascript <br>
 여자친구의 요청으로 빵돌이 사진으로 Start 하는 기능을 추가하였습니다!<br><br>
 
 ## 게임방법
@@ -9,19 +11,20 @@ Vanilla javascript로 구현한 퍼즐게임입니다.<br>
 4. 마우스를 이용하여 뒤섞인 퍼즐을 원래 사진으로 맞추면 됩니다 <br><br>
 
 ## 기능설명
-1. 랜덤이미지 혹은 로컬 이미지를 불러와서 드래그, 좌표 설정해주기(정답 이미지로 사용하기 위함)
+1. 랜덤이미지 혹은 로컬 이미지를 불러오기
+2. IMAGE_NUM개로 사진을 분할 후 좌표 지정
 
 
 ```
-for (var i = 0; i < IMAGE_NUM; i++) { // IMAGE_NUM = 16
+for (var i = 0; i < IMAGE_NUM; i++) { // IMAGE_NUM = 16 (4*4 퍼즐)
     newList.push(document.createElement("li"));
     newList[i].setAttribute('id', 'list' + i);
     newList[i].setAttribute('draggable', 'true');
 
-    if(!isBBang){
+    if(!isBBang){ // 시작버튼으로 시작한 경우
       newList[i].style.background = "url(https://picsum.photos/400/400/?random&t=" + random;
     }
-    else {
+    else { // 빵돌이 사진으로 시작한 경우
       newList[i].style.background = `url('${imgFolder}${random}.jpeg')`;
       newList[i].style.backgroundSize = "400px 400px";
     }
@@ -29,7 +32,6 @@ for (var i = 0; i < IMAGE_NUM; i++) { // IMAGE_NUM = 16
     GameImage.appendChild(newList[i]);
 
     newList[i].style.backgroundPosition = -pos_x + 'px ' + -pos_y + 'px';
-    console.log(-pos_x + 'px ' + -pos_y + 'px');
 
     pos_x += 100;
     if (pos_x == (Math.sqrt(IMAGE_NUM) * 100) && i != 0) {
